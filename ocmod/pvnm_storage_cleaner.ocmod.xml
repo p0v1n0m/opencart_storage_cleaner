@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <code>pvnm_storage_cleaner</code>
+    <name>Storage Cleaner</name>
+    <version>1.0.0</version>
+    <author>p0v1n0m@gmail.com</author>
+    <link>mailto:p0v1n0m@gmail.com</link>
+    <file path="admin/controller/common/header.php">
+        <operation>
+            <search><![CDATA[
+$data['text_logout'] = $this->language->get('text_logout');
+            ]]></search>
+            <add position="after"><![CDATA[
+        $this->load->language('module/pvnm_storage_cleaner');
+
+        $data['text_logout'] = $this->language->get('text_logout');
+        $data['text_clear'] = $this->language->get('text_clear');
+        $data['text_refresh'] = $this->language->get('text_refresh');
+        $data['text_cache'] = $this->language->get('text_cache');
+        $data['text_cache_system'] = $this->language->get('text_cache_system');
+        $data['text_cache_modification'] = $this->language->get('text_cache_modification');
+        $data['text_cache_image'] = $this->language->get('text_cache_image');
+        $data['text_log'] = $this->language->get('text_log');
+        $data['text_log_error'] = $this->language->get('text_log_error');
+        $data['text_log_modification'] = $this->language->get('text_log_modification');
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+$data['logout'] = $this->url->link('common/logout', 'token=' . $this->session->data['token'], 'SSL');
+            ]]></search>
+            <add position="after"><![CDATA[
+            if ($this->config->get('pvnm_storage_cleaner_status') == 1) {
+                $data['storage_cleaner'] = true;
+            } else {
+                $data['storage_cleaner'] = false;
+            }
+            ]]></add>
+        </operation>
+    </file>
+    <file path="admin/view/template/common/header.tpl">
+        <operation>
+            <search><![CDATA[
+<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-life-ring fa-lg"></i></a>
+            ]]></search>
+            <add position="before"><![CDATA[
+    <?php if ($storage_cleaner) { ?>
+    <li class="dropdown"><a class="dropdown-toggle clear-dropdown-toggle" data-toggle="dropdown"><i class="fa fa-eraser fa-lg"></i></a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li class="dropdown-header"><?php echo $text_cache; ?></li>
+        <li><a><?php echo $text_cache_system; ?><button onclick="goClear('cache', 'system');" type="button" data-toggle="tooltip" title="<?php echo $text_clear; ?>" class="btn btn-danger btn-xs pull-right" id="button-cache-system"><i class="fa fa-eraser"></i></button></a></li>
+        <li><a><?php echo $text_cache_modification; ?><button onclick="goClear('cache', 'modification');" type="button" data-toggle="tooltip" title="<?php echo $text_refresh; ?>" class="btn btn-danger btn-xs pull-right" id="button-cache-modification"><i class="fa fa-eraser"></i></button></a></li>
+        <li><a><?php echo $text_cache_image; ?><button onclick="goClear('cache', 'image');" type="button" data-toggle="tooltip" title="<?php echo $text_clear; ?>" class="btn btn-danger btn-xs pull-right" id="button-cache-image"><i class="fa fa-eraser"></i></button></a></li>
+        <li class="divider"></li>
+        <li class="dropdown-header"><?php echo $text_log; ?></li>
+        <li><a><?php echo $text_log_error; ?><button onclick="goClear('log', 'error');" type="button" data-toggle="tooltip" title="<?php echo $text_clear; ?>" class="btn btn-danger btn-xs pull-right" id="button-log-error"><i class="fa fa-eraser"></i></button></a></li>
+        <li><a><?php echo $text_log_modification; ?><button onclick="goClear('log', 'modification');" type="button" data-toggle="tooltip" title="<?php echo $text_clear; ?>" class="btn btn-danger btn-xs pull-right" id="button-log-modification"><i class="fa fa-eraser"></i></button></a></li>
+      </ul>
+    </li>
+    <?php } ?>
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[
+<ul class="nav pull-right">
+            ]]></search>
+            <add position="before"><![CDATA[
+<?php if ($storage_cleaner) { ?>
+<script type="text/javascript"><!--
+function goClear(type, key) {
+    $.ajax({
+        url: 'index.php?route=module/pvnm_storage_cleaner/clear' + type + '&token=' + getURLVar('token'),
+        type: 'post',
+        data: 'key=' + key,
+        dataType: 'json',
+        beforeSend: function() {
+            $('#button-' + type + '-' + key).button('loading');
+        },
+        complete: function() {
+            $('#button-' + type + '-' + key).button('reset');
+        },
+        success: function(json) {
+            $('#content > .container-fluid > .alert-success, #content > .container-fluid > .alert-danger').remove();
+            $('.clear-dropdown-toggle').trigger('click');
+
+            if (json['success']) {
+                $('#button-' + type + '-' + key).closest('li').addClass('bg-success');
+                $('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+            }
+
+            if (json['error']) {
+                $('#button-' + type + '-' + key).closest('li').addClass('bg-danger');
+                $('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+    });
+}
+//--></script>
+<?php } ?>
+            ]]></add>
+        </operation>
+    </file>
+</modification>
