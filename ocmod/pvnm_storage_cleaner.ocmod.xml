@@ -27,7 +27,7 @@ $data['text_logout'] = $this->language->get('text_logout');
         </operation>
         <operation>
             <search><![CDATA[
-$data['logout'] = $this->url->link('common/logout', 'token=' . $this->session->data['token'], 'SSL');
+$data['logged'] = true;
             ]]></search>
             <add position="after"><![CDATA[
             if ($this->config->get('pvnm_storage_cleaner_status') == 1) {
@@ -44,7 +44,7 @@ $data['logout'] = $this->url->link('common/logout', 'token=' . $this->session->d
 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-life-ring fa-lg"></i></a>
             ]]></search>
             <add position="before"><![CDATA[
-    <?php if ($storage_cleaner) { ?>
+    <?php if (isset($storage_cleaner) && $storage_cleaner) { ?>
     <li class="dropdown"><a class="dropdown-toggle clear-dropdown-toggle" data-toggle="dropdown"><i class="fa fa-eraser fa-lg"></i></a>
       <ul class="dropdown-menu dropdown-menu-right">
         <li class="dropdown-header"><?php echo $text_cache; ?></li>
@@ -65,7 +65,7 @@ $data['logout'] = $this->url->link('common/logout', 'token=' . $this->session->d
 <ul class="nav pull-right">
             ]]></search>
             <add position="before"><![CDATA[
-<?php if ($storage_cleaner) { ?>
+<?php if (isset($storage_cleaner) && $storage_cleaner) { ?>
 <script type="text/javascript"><!--
 function goClear(type, key) {
     $.ajax({
