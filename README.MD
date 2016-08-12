@@ -23,5 +23,3 @@ MIT
 ![Back-end Demo](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/01.jpg)
 
 ![Back-end Demo](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/02.jpg)
-
-![Back-end Demo](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/03.jpg)
