@@ -81,7 +81,7 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 
 		$json = array();
 
-		if (!$this->user->hasPermission('modify', 'module/pvnm_storage_cleaner')) {
+		if (!$this->user->hasPermission('modify', 'module/pvnm_storage_cleaner') || !$this->user->hasPermission('access', 'module/pvnm_storage_cleaner')) {
 			$json['error'] = $this->language->get('error_permission');
 		} else {
 			$key = $this->request->post['key'];
@@ -142,7 +142,7 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 
 		$json = array();
 
-		if (!$this->user->hasPermission('modify', 'module/pvnm_storage_cleaner') || empty($this->request->post['key'])) {
+		if (!$this->user->hasPermission('modify', 'module/pvnm_storage_cleaner') || !$this->user->hasPermission('access', 'module/pvnm_storage_cleaner') || empty($this->request->post['key'])) {
 			$json['error'] = $this->language->get('error_permission');
 		} else {
 			$key = $this->request->post['key'];
