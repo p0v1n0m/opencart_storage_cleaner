@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title']           = 'Storage Cleaner'; 
+$_['heading_title']           = 'Чистильщик'; 
 
 // Tab
 $_['tab_settings']            = 'Настройки';

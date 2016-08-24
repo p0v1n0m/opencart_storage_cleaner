@@ -3,7 +3,7 @@
 	<div class="page-header">
 		<div class="container-fluid">
 			<div class="pull-right">
-				<button type="submit" form="form" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-success"><i class="fa fa-save"></i></button>
+				<button type="submit" form="form" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary"><i class="fa fa-save"></i></button>
 				<a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
 			</div>
 			<h1><?php echo $heading_title; ?></h1>
@@ -20,20 +20,15 @@
 			<button type="button" class="close" data-dismiss="alert">&times;</button>
 		</div>
 		<?php } ?>
-		<?php if ($success) { ?>
-		<div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $success; ?>
-			<button type="button" class="close" data-dismiss="alert">&times;</button>
-		</div>
-		<?php } ?>
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title"><i class="fa fa-cogs"></i> <?php echo $text_edit; ?></h3>
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $text_edit; ?></h3>
 			</div>
 			<div class="panel-body">
 				<form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form" class="form-horizontal">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#tab-settings" data-toggle="tab"><i class="fa fa-cog"></i> <?php echo $tab_settings; ?></a></li>
-						<li><a href="#tab-help" data-toggle="tab"><i class="fa fa-comment"></i> <?php echo $tab_help; ?></a></li>
+						<li class="active"><a href="#tab-settings" data-toggle="tab"><?php echo $tab_settings; ?></a></li>
+						<li><a href="#tab-help" data-toggle="tab"><?php echo $tab_help; ?></a></li>
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane active" id="tab-settings">

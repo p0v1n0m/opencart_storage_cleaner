@@ -1,6 +1,7 @@
 <?php
 class ControllerModulePvnmStorageCleaner extends Controller {
 	private $error = array();
+	private $maintenance  = 0;
 
 	public function index() {
 		$this->load->language('module/pvnm_storage_cleaner');
@@ -14,7 +15,7 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
-			$this->response->redirect($this->url->link('module/pvnm_storage_cleaner', 'token=' . $this->session->data['token'], 'SSL'));
+			$this->response->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
 		}
 
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -33,14 +34,6 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 			$data['error_warning'] = $this->error['warning'];
 		} else {
 			$data['error_warning'] = '';
-		}
-
-		if (isset($this->session->data['success'])) {
-			$data['success'] = $this->session->data['success'];
-
-			unset($this->session->data['success']);
-		} else {
-			$data['success'] = '';
 		}
 
 		$data['breadcrumbs'] = array();
@@ -89,6 +82,13 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 			if ($key == 'system') {
 				$dir = DIR_CACHE;
 			} elseif ($key == 'modification') {
+				// Just before files are deleted, if config settings say maintenance mode is off then turn it on
+				$this->maintenance = $this->config->get('config_maintenance');
+
+				$this->load->model('setting/setting');
+
+				$this->model_setting_setting->editSettingValue('config', 'config_maintenance', true);
+
 				$dir = DIR_MODIFICATION;
 			} elseif ($key == 'image') {
 				$dir = DIR_IMAGE . 'cache/';
@@ -99,26 +99,35 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 			if ($dir) {
 				$files = array();
 
+				// Make path into an array
 				$path = array($dir . '*');
 
+				// While the path array is still populated keep looping through
 				while (count($path) != 0) {
 					$next = array_shift($path);
 
 					foreach (glob($next) as $file) {
+						// If directory add to path array
 						if (is_dir($file)) {
 							$path[] = $file . '/*';
 						}
 
+						// Add the file to the files to be deleted array
 						$files[] = $file;
 					}
 				}
 
+				// Reverse sort the file array
 				rsort($files);
 
+				// Clear all files
 				foreach ($files as $file) {
 					if ($file != $dir . 'index.html' && $file != $dir . '.htaccess') {
+						// If file just delete
 						if (is_file($file)) {
 							unlink($file);
+
+						// If directory use the remove directory function
 						} elseif (is_dir($file)) {
 							rmdir($file);
 						}
@@ -170,13 +179,7 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 
 	protected function refreshModification() {
 		$this->load->model('extension/modification');
-
-		// Just before files are deleted, if config settings say maintenance mode is off then turn it on
-		$maintenance = $this->config->get('config_maintenance');
-
 		$this->load->model('setting/setting');
-
-		$this->model_setting_setting->editSettingValue('config', 'config_maintenance', true);
 
 		//Log
 		$log = array();
@@ -238,16 +241,16 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 					$path = '';
 
 					// Get the full path of the files that are going to be used for modification
-					if ((substr($file, 0, 7) == 'catalog')) {
-						$path = DIR_CATALOG . substr($file, 8);
+					if (substr($file, 0, 7) == 'catalog') {
+						$path = DIR_CATALOG . str_replace('../', '', substr($file, 8));
 					}
 
-					if ((substr($file, 0, 5) == 'admin')) {
-						$path = DIR_APPLICATION . substr($file, 6);
+					if (substr($file, 0, 5) == 'admin') {
+						$path = DIR_APPLICATION . str_replace('../', '', substr($file, 6));
 					}
 
-					if ((substr($file, 0, 6) == 'system')) {
-						$path = DIR_SYSTEM . substr($file, 7);
+					if (substr($file, 0, 6) == 'system') {
+						$path = DIR_SYSTEM . str_replace('../', '', substr($file, 7));
 					}
 
 					if ($path) {
@@ -276,7 +279,7 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 									$original[$key] = preg_replace('~\r?\n~', "\n", $content);
 
 									// Log
-									$log[] = PHP_EOL . 'FILE: ' . $key;
+									$log[] = 'FILE: ' . $key;
 								}
 
 								foreach ($operations as $operation) {
@@ -434,24 +437,21 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 									}
 
 									if (!$status) {
+										// Log
+										$log[] = 'NOT FOUND!';
+
+										// Skip current operation
+										if ($error == 'skip') {
+											break;
+										}
+
 										// Abort applying this modification completely.
 										if ($error == 'abort') {
 											$modification = $recovery;
 											// Log
-											$log[] = 'NOT FOUND - ABORTING!';
+											$log[] = 'ABORTING!';
+
 											break 5;
-										}
-										// Skip current operation or break
-										elseif ($error == 'skip') {
-											// Log
-											$log[] = 'NOT FOUND - OPERATION SKIPPED!';
-											continue;
-										}
-										// Break current operations
-										else {
-											// Log
-											$log[] = 'NOT FOUND - OPERATIONS ABORTED!';
-											break;
 										}
 									}
 								}
@@ -494,7 +494,7 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 		}
 
 		// Maintance mode back to original settings
-		$this->model_setting_setting->editSettingValue('config', 'config_maintenance', $maintenance);
+		$this->model_setting_setting->editSettingValue('config', 'config_maintenance', $this->maintenance);
 	}
 
 	protected function validate() {
