@@ -48,10 +48,10 @@
 							</div>
 						</div>
 						<div class="tab-pane" id="tab-help">
-              <div class="form-group">
-                <label class="col-sm-2 control-label"><?php echo $text_documentation; ?></label>
-                <div class="col-sm-10"><a href="https://github.com/p0v1n0m/opencart_storage_cleaner" target="_blank" class="btn">https://github.com/p0v1n0m/opencart_storage_cleaner</a></div>
-              </div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label"><?php echo $text_documentation; ?></label>
+								<div class="col-sm-10"><a href="https://github.com/p0v1n0m/opencart_storage_cleaner" target="_blank" class="btn">https://github.com/p0v1n0m/opencart_storage_cleaner</a></div>
+							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label"><?php echo $text_developer; ?></label>
 								<div class="col-sm-10"><a href="mailto:p0v1n0m@gmail.com" class="btn btn-link">p0v1n0m@gmail.com</a></div>
