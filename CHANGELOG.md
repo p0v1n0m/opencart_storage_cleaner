@@ -1,5 +1,8 @@
 # Changelog
 
+#### 1.3.0
+* Added size of all cache and logs in to informer
+
 #### 1.2.3
 * Unified success text
 

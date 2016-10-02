@@ -2,7 +2,7 @@
 <modification>
 	<code>pvnm_storage_cleaner</code>
 	<name>Storage Cleaner</name>
-	<version>1.2.3</version>
+	<version>1.3.0</version>
 	<author>p0v1n0m@gmail.com</author>
 	<link>mailto:p0v1n0m@gmail.com</link>
 	<file path="admin/controller/common/header.php">
@@ -11,20 +11,24 @@
 $data['logout'] = $this->url->link('common/logout', 'token=' . $this->session->data['token'], 'SSL');
 			]]></search>
 			<add position="after"><![CDATA[
-			$this->load->language('module/pvnm_storage_cleaner');
-
-			$data['text_logout'] = $this->language->get('text_logout');
-			$data['text_clear'] = $this->language->get('text_clear');
-			$data['text_refresh'] = $this->language->get('text_refresh');
-			$data['text_cache'] = $this->language->get('text_cache');
-			$data['text_cache_system'] = $this->language->get('text_cache_system');
-			$data['text_cache_modification'] = $this->language->get('text_cache_modification');
-			$data['text_cache_image'] = $this->language->get('text_cache_image');
-			$data['text_log'] = $this->language->get('text_log');
-			$data['text_log_error'] = $this->language->get('text_log_error');
-			$data['text_log_modification'] = $this->language->get('text_log_modification');
-
 			if ($this->config->get('pvnm_storage_cleaner_status') && $this->user->hasPermission('access', 'module/pvnm_storage_cleaner') && $this->user->hasPermission('modify', 'module/pvnm_storage_cleaner')) {
+				$this->load->language('module/pvnm_storage_cleaner');
+
+				$data['text_logout'] = $this->language->get('text_logout');
+				$data['text_clear'] = $this->language->get('text_clear');
+				$data['text_refresh'] = $this->language->get('text_refresh');
+				$data['text_cache'] = $this->language->get('text_cache');
+				$data['text_cache_system'] = $this->language->get('text_cache_system');
+				$data['text_cache_modification'] = $this->language->get('text_cache_modification');
+				$data['text_cache_image'] = $this->language->get('text_cache_image');
+				$data['text_log'] = $this->language->get('text_log');
+				$data['text_log_error'] = $this->language->get('text_log_error');
+				$data['text_log_modification'] = $this->language->get('text_log_modification');
+
+				$this->load->model('module/pvnm_storage_cleaner');
+
+				$data['text_cleaner_size'] = $this->model_module_pvnm_storage_cleaner->getSize();
+
 				$data['storage_cleaner'] = true;
 			} else {
 				$data['storage_cleaner'] = false;
@@ -39,7 +43,7 @@ $data['logout'] = $this->url->link('common/logout', 'token=' . $this->session->d
 			]]></search>
 			<add position="after"><![CDATA[
 	<?php if ($storage_cleaner) { ?>
-	<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-eraser fa-lg"></i></a>
+	<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><span class="label label-danger pull-left"><?php echo $text_cleaner_size; ?></span><i class="fa fa-eraser fa-lg"></i></a>
 	  <ul class="dropdown-menu dropdown-menu-right clear-dropdown">
 		<li class="dropdown-header"><?php echo $text_cache; ?></li>
 		<li><a><?php echo $text_cache_system; ?><button onclick="goClear('cache', 'system');" type="button" data-loading-text="<i class='fa fa-spinner'></i>" data-toggle="tooltip" title="<?php echo $text_clear; ?>" class="btn btn-danger btn-xs pull-right" id="button-cache-system"><i class="fa fa-trash-o"></i></button></a></li>
