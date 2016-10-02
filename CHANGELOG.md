@@ -1,5 +1,8 @@
 # Changelog
 
+#### 1.2.2
+* Change color and icon remove button
+
 #### 1.2.1
 * Add icons on the tabs settings
 
