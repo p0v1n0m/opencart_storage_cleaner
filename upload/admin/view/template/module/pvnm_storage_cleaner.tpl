@@ -27,8 +27,8 @@
 			<div class="panel-body">
 				<form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form" class="form-horizontal">
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#tab-settings" data-toggle="tab"><?php echo $tab_settings; ?></a></li>
-						<li><a href="#tab-help" data-toggle="tab"><?php echo $tab_help; ?></a></li>
+						<li class="active"><a href="#tab-settings" data-toggle="tab"><i class="fa fa-cog"></i> <?php echo $tab_settings; ?></a></li>
+						<li><a href="#tab-help" data-toggle="tab"><i class="fa fa-comment"></i> <?php echo $tab_help; ?></a></li>
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane active" id="tab-settings">

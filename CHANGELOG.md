@@ -1,5 +1,8 @@
 # Changelog
 
+#### 1.2.1
+* Add icons on the tabs settings
+
 #### 1.2.0
 * Fixed proper inclusion of maintenance mode when removed modifications.
 * Minor changes for compatibility.
