@@ -1,5 +1,8 @@
 # Changelog
 
+#### 1.2.3
+* Unified success text
+
 #### 1.2.2
 * Change color and icon remove button
 

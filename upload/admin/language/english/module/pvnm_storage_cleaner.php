@@ -9,8 +9,7 @@ $_['tab_help']                = 'Help';
 // Text
 $_['text_module']             = 'Modules';
 $_['text_success']            = 'Success: You have modified module!';
-$_['text_success_cache']      = 'Success: Clear cache!';
-$_['text_success_log']        = 'Success: Clear logs!';
+$_['text_success_clear']      = 'Success: Cleared!';
 $_['text_edit']               = 'Edit Module';
 $_['text_documentation']      = 'Documentation';
 $_['text_developer']          = 'Developer';

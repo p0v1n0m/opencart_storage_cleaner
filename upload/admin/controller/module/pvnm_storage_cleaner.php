@@ -138,7 +138,7 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 					$this->refreshModification();
 				}
 
-				$json['success'] = $this->language->get('text_success_cache');
+				$json['success'] = $this->language->get('text_success_clear');
 			}
 		}
 
@@ -169,7 +169,7 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 
 				fclose($handle);
 
-				$json['success'] = $this->language->get('text_success_log');
+				$json['success'] = $this->language->get('text_success_clear');
 			}
 		}
 
