@@ -27,6 +27,7 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 		$data['text_enabled'] = $this->language->get('text_enabled');
 		$data['text_disabled'] = $this->language->get('text_disabled');
 		$data['entry_status'] = $this->language->get('entry_status');
+		$data['entry_size'] = $this->language->get('entry_size');
 		$data['button_save'] = $this->language->get('button_save');
 		$data['button_cancel'] = $this->language->get('button_cancel');
 
@@ -60,6 +61,12 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 			$data['pvnm_storage_cleaner_status'] = $this->request->post['pvnm_storage_cleaner_status'];
 		} else {
 			$data['pvnm_storage_cleaner_status'] = $this->config->get('pvnm_storage_cleaner_status');
+		}
+
+		if (isset($this->request->post['pvnm_storage_cleaner_size'])) {
+			$data['pvnm_storage_cleaner_size'] = $this->request->post['pvnm_storage_cleaner_size'];
+		} else {
+			$data['pvnm_storage_cleaner_size'] = $this->config->get('pvnm_storage_cleaner_size');
 		}
 
 		$data['header'] = $this->load->controller('common/header');
@@ -138,6 +145,10 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 					$this->refreshModification();
 				}
 
+				$this->load->model('module/pvnm_storage_cleaner');
+
+				$json['size'] = $this->model_module_pvnm_storage_cleaner->getSize();
+
 				$json['success'] = $this->language->get('text_success_clear');
 			}
 		}
@@ -168,6 +179,10 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 				$handle = fopen($file, 'w+');
 
 				fclose($handle);
+
+				$this->load->model('module/pvnm_storage_cleaner');
+
+				$json['size'] = $this->model_module_pvnm_storage_cleaner->getSize();
 
 				$json['success'] = $this->language->get('text_success_clear');
 			}

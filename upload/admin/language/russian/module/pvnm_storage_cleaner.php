@@ -25,6 +25,7 @@ $_['text_log_modification']   = 'Лог модификаций';
 
 // Entry
 $_['entry_status']            = 'Статус';
+$_['entry_size']              = 'Подсчитывать размер';
 
 // Error
 $_['error_permission']        = 'У вас нет прав для изменения этого модуля!';

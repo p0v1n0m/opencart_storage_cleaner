@@ -1,5 +1,10 @@
 # Changelog
 
+#### 1.3.1
+* Calculation of the size added in the module settings
+* Update counter of the size after each cleaning
+* Alert message moved to bottom
+
 #### 1.3.0
 * Added size of all cache and logs in to informer
 

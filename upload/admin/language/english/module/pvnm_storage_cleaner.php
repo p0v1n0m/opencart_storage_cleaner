@@ -25,6 +25,7 @@ $_['text_log_modification']   = 'Modification Log';
 
 // Entry
 $_['entry_status']            = 'Status';
+$_['entry_size']              = 'Calculate Size';
 
 // Error
 $_['error_permission']        = 'Warning: You do not have permission to modify module!';

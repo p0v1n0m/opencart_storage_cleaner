@@ -37,11 +37,25 @@
 								<div class="col-sm-10">
 									<div class="btn-group" data-toggle="buttons">
 										<?php if ($pvnm_storage_cleaner_status) { ?>
-										<label class="btn btn-info active"><input type="radio" name="pvnm_storage_cleaner_status" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
 										<label class="btn btn-info"><input type="radio" name="pvnm_storage_cleaner_status" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
+										<label class="btn btn-info active"><input type="radio" name="pvnm_storage_cleaner_status" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
 										<?php } else { ?>
-										<label class="btn btn-info"><input type="radio" name="pvnm_storage_cleaner_status" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
 										<label class="btn btn-info active"><input type="radio" name="pvnm_storage_cleaner_status" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
+										<label class="btn btn-info"><input type="radio" name="pvnm_storage_cleaner_status" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
+										<?php } ?>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-pvnm_storage_cleaner_size"><?php echo $entry_size; ?></label>
+								<div class="col-sm-10">
+									<div class="btn-group" data-toggle="buttons">
+										<?php if ($pvnm_storage_cleaner_size) { ?>
+										<label class="btn btn-info"><input type="radio" name="pvnm_storage_cleaner_size" value="0" autocomplete="off"><?php echo $text_disabled; ?></label>
+										<label class="btn btn-info active"><input type="radio" name="pvnm_storage_cleaner_size" value="1" autocomplete="off" checked="checked"><?php echo $text_enabled; ?></label>
+										<?php } else { ?>
+										<label class="btn btn-info active"><input type="radio" name="pvnm_storage_cleaner_size" value="0" autocomplete="off" checked="checked"><?php echo $text_disabled; ?></label>
+										<label class="btn btn-info"><input type="radio" name="pvnm_storage_cleaner_size" value="1" autocomplete="off"><?php echo $text_enabled; ?></label>
 										<?php } ?>
 									</div>
 								</div>
