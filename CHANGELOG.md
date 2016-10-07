@@ -1,5 +1,9 @@
 # Changelog
 
+#### 1.4.0
+* Compatibility with OpenCart 2.2.x
+* New screenshots
+
 #### 1.3.1
 * Calculation of the size added in the module settings
 * Update counter of the size after each cleaning
