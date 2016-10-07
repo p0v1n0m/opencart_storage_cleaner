@@ -455,18 +455,21 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 										// Log
 										$log[] = 'NOT FOUND!';
 
-										// Skip current operation
-										if ($error == 'skip') {
-											break;
-										}
-
 										// Abort applying this modification completely.
 										if ($error == 'abort') {
 											$modification = $recovery;
+
 											// Log
 											$log[] = 'ABORTING!';
 
 											break 5;
+										}
+
+										// Skip current operation or break
+										if ($error == 'skip') {
+											continue;
+										} else {
+											break;
 										}
 									}
 								}

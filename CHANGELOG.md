@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.2
+* More compatibility with OpenCart 2.2.x
+
 ## 1.4.1
 * Updated russian translation
 
