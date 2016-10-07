@@ -1,12 +1,12 @@
 # Storage Cleaner
 
-Cleaning cache and logs by one click from any admin page with ajax.
+Cleaning cache and logs with ajax.
 
-#### Compatibility
+![Back-end Demo](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/01.jpg)
 
-OpenCart 2.1.x
+![Back-end Demo](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/02.jpg)
 
-#### Installation
+## Installation
 
 * Install ocmod file via Extension Installer.
 * Go to Modification and click Refresh.
@@ -15,9 +15,11 @@ OpenCart 2.1.x
 * Install module.
 * Change status of module on "Enabled".
 
-#### License
+## Compatibility
 
-MIT
+OpenCart 2.1.x
+OpenCart 2.2.x
 
-#### Screenshots
-![Back-end Demo](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/01.jpg)
+## License
+
+[MIT](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/LICENSE)
