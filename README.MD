@@ -17,8 +17,8 @@ Cleaning cache and logs with ajax.
 
 ## Compatibility
 
-OpenCart 2.1.x
-OpenCart 2.2.x
+* OpenCart 2.1.x
+* OpenCart 2.2.x
 
 ## License
 
