@@ -1,6 +1,6 @@
 # Storage Cleaner
 
-Clearing cache and logs in one click
+Clear cache and logs with one click
 
 ![Backend](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/en-gb/001.jpg)
 
@@ -12,8 +12,9 @@ Clearing cache and logs in one click
 
 ## Compatibility
 
-* OpenCart 2.3.x (for OpenCart 2.1.x - 2.2.x use version 1.4.2: https://github.com/p0v1n0m/opencart_storage_cleaner/tree/dfa5e283c05366a7c3bc35b844874e80485679ea)
+* OpenCart 2.3.x
 * ocStore 2.3.x
+* for OpenCart 2.1.x - 2.2.x use version 1.4.2: https://github.com/p0v1n0m/opencart_storage_cleaner/tree/dfa5e283c05366a7c3bc35b844874e80485679ea
 
 ## Installation
 
