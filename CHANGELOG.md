@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.0
+* Compatibility only with OpenCart (ocStore) 2.3.x
+* Added file sizes for all fields
+* Added a button to clear all caches and logs
+* Added rounding up to two characters for GB and more
+* Fixed error of size mashing with insufficient permissions
+* Fixed bug when updating modification cache via Extension Installer
+* Fixed a size query only if this is enabled in the settings
+
 ## 1.4.2
 * More compatibility with OpenCart 2.2.x
 
@@ -28,10 +37,10 @@
 * Add icons on the tabs settings
 
 ## 1.2.0
-* Fixed proper inclusion of maintenance mode when removed modifications.
-* Minor changes for compatibility.
-* Translated module name for the Russian locale.
-* Changed redirection when you save module settings.
+* Fixed proper inclusion of maintenance mode when removed modifications
+* Minor changes for compatibility
+* Translated module name for the Russian locale
+* Changed redirection when you save module settings
 
 ## 1.1.0
 * Usability fixes

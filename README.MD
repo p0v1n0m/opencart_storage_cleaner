@@ -1,25 +1,28 @@
 # Storage Cleaner
 
-Cleaning cache and logs with ajax.
+Clearing cache and logs in one click
 
-![Back-end Demo](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/01.jpg)
+![Backend](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/en-gb/001.jpg)
 
-![Back-end Demo](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/02.jpg)
+![Backend](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/en-gb/002.jpg)
 
-## Installation
+![Backend](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/en-gb/003.jpg)
 
-* Install ocmod file via Extension Installer.
-* Go to Modification and click Refresh.
-* Copy the contents of the upload folder to the root directory of your site.
-* Go to admin under menu: "System - User - User Groups" and click on edit on the Top Administrator group. Enable for module on both Access Permission and Modify Permission check box groups.
-* Install module.
-* Change status of module on "Enabled".
+![Backend](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/screenshots/en-gb/004.jpg)
 
 ## Compatibility
 
-* OpenCart 2.1.x
-* OpenCart 2.2.x
+* OpenCart 2.3.x (for OpenCart 2.1.x - 2.2.x use version 1.4.2: https://github.com/p0v1n0m/opencart_storage_cleaner/tree/dfa5e283c05366a7c3bc35b844874e80485679ea)
+* ocStore 2.3.x
+
+## Installation
+
+* Navigate to Extensions > Extension Installer and upload ZIP file
+* Navigate to Extensions > Modifications and click Clear then click Refresh
+* Navigate to System > Users > User Groups and click on edit on your user group
+* Enable the access permission and the modify permission for the module
+* Install the module and change the status to Enabled
 
 ## License
 
-[MIT](https://github.com/p0v1n0m/opencart_storage_cleaner/blob/master/LICENSE)
+MIT

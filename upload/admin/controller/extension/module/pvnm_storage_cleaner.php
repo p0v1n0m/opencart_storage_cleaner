@@ -1,13 +1,20 @@
 <?php
-class ControllerModulePvnmStorageCleaner extends Controller {
+/**
+ * @author    p0v1n0m <p0v1n0m@gmail.com>
+ * @copyright 2016-2017 p0v1n0m
+ * @license   The MIT License (MIT)
+ * @link      https://github.com/p0v1n0m/opencart_storage_cleaner
+ */
+
+class ControllerExtensionModulePvnmStorageCleaner extends Controller {
 	private $error = array();
-	private $maintenance  = 0;
+	private $maintenance = 0;
 
 	public function index() {
-		$this->load->language('module/pvnm_storage_cleaner');
+		$this->load->language('extension/module/pvnm_storage_cleaner');
 
 		$this->document->setTitle($this->language->get('heading_title'));
-		
+
 		$this->load->model('setting/setting');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
@@ -15,7 +22,7 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
-			$this->response->redirect($this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL'));
+			$this->response->redirect($this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=module', true));
 		}
 
 		$data['heading_title'] = $this->language->get('heading_title');
@@ -41,21 +48,21 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL')
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
 		);
 
 		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('text_module'),
-			'href' => $this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL')
+			'text' => $this->language->get('text_extension'),
+			'href' => $this->url->link('extension/extension', 'token=' . $this->session->data['token'], true)
 		);
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('module/pvnm_storage_cleaner', 'token=' . $this->session->data['token'], 'SSL')
+			'href' => $this->url->link('extension/module/pvnm_storage_cleaner', 'token=' . $this->session->data['token'], true)
 		);
 
-		$data['action'] = $this->url->link('module/pvnm_storage_cleaner', 'token=' . $this->session->data['token'], 'SSL');
-		$data['cancel'] = $this->url->link('extension/module', 'token=' . $this->session->data['token'], 'SSL');
+		$data['action'] = $this->url->link('extension/module/pvnm_storage_cleaner', 'token=' . $this->session->data['token'], true);
+		$data['cancel'] = $this->url->link('extension/extension', 'token=' . $this->session->data['token'], true);
 
 		if (isset($this->request->post['pvnm_storage_cleaner_status'])) {
 			$data['pvnm_storage_cleaner_status'] = $this->request->post['pvnm_storage_cleaner_status'];
@@ -73,15 +80,15 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('module/pvnm_storage_cleaner.tpl', $data));
+		$this->response->setOutput($this->load->view('extension/module/pvnm_storage_cleaner', $data));
 	}
 
 	public function clearCache() {
-		$this->load->language('module/pvnm_storage_cleaner');
+		$this->load->language('extension/module/pvnm_storage_cleaner');
 
 		$json = array();
 
-		if (!$this->user->hasPermission('modify', 'module/pvnm_storage_cleaner') || !$this->user->hasPermission('access', 'module/pvnm_storage_cleaner')) {
+		if (!$this->validateWidget() || empty($this->request->post['key'])) {
 			$json['error'] = $this->language->get('error_permission');
 		} else {
 			$key = $this->request->post['key'];
@@ -145,9 +152,11 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 					$this->refreshModification();
 				}
 
-				$this->load->model('module/pvnm_storage_cleaner');
+				$this->load->model('extension/module/pvnm_storage_cleaner');
 
-				$json['size'] = $this->model_module_pvnm_storage_cleaner->getSize();
+				if ($this->config->get('pvnm_storage_cleaner_size')) {
+					$json['size'] = $this->model_extension_module_pvnm_storage_cleaner->getSize();
+				}
 
 				$json['success'] = $this->language->get('text_success_clear');
 			}
@@ -158,11 +167,11 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 	}
 
 	public function clearLog() {
-		$this->load->language('module/pvnm_storage_cleaner');
+		$this->load->language('extension/module/pvnm_storage_cleaner');
 
 		$json = array();
 
-		if (!$this->user->hasPermission('modify', 'module/pvnm_storage_cleaner') || !$this->user->hasPermission('access', 'module/pvnm_storage_cleaner') || empty($this->request->post['key'])) {
+		if (!$this->validateWidget() || empty($this->request->post['key'])) {
 			$json['error'] = $this->language->get('error_permission');
 		} else {
 			$key = $this->request->post['key'];
@@ -180,9 +189,11 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 
 				fclose($handle);
 
-				$this->load->model('module/pvnm_storage_cleaner');
+				$this->load->model('extension/module/pvnm_storage_cleaner');
 
-				$json['size'] = $this->model_module_pvnm_storage_cleaner->getSize();
+				if ($this->config->get('pvnm_storage_cleaner_size')) {
+					$json['size'] = $this->model_extension_module_pvnm_storage_cleaner->getSize();
+				}
 
 				$json['success'] = $this->language->get('text_success_clear');
 			}
@@ -256,16 +267,16 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 					$path = '';
 
 					// Get the full path of the files that are going to be used for modification
-					if (substr($file, 0, 7) == 'catalog') {
-						$path = DIR_CATALOG . str_replace('../', '', substr($file, 8));
+					if ((substr($file, 0, 7) == 'catalog')) {
+						$path = DIR_CATALOG . substr($file, 8);
 					}
 
-					if (substr($file, 0, 5) == 'admin') {
-						$path = DIR_APPLICATION . str_replace('../', '', substr($file, 6));
+					if ((substr($file, 0, 5) == 'admin')) {
+						$path = DIR_APPLICATION . substr($file, 6);
 					}
 
-					if (substr($file, 0, 6) == 'system') {
-						$path = DIR_SYSTEM . str_replace('../', '', substr($file, 7));
+					if ((substr($file, 0, 6) == 'system')) {
+						$path = DIR_SYSTEM . substr($file, 7);
 					}
 
 					if ($path) {
@@ -294,7 +305,7 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 									$original[$key] = preg_replace('~\r?\n~', "\n", $content);
 
 									// Log
-									$log[] = 'FILE: ' . $key;
+									$log[] = PHP_EOL . 'FILE: ' . $key;
 								}
 
 								foreach ($operations as $operation) {
@@ -452,24 +463,24 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 									}
 
 									if (!$status) {
-										// Log
-										$log[] = 'NOT FOUND!';
-
 										// Abort applying this modification completely.
 										if ($error == 'abort') {
 											$modification = $recovery;
-
 											// Log
-											$log[] = 'ABORTING!';
-
+											$log[] = 'NOT FOUND - ABORTING!';
 											break 5;
 										}
-
 										// Skip current operation or break
-										if ($error == 'skip') {
+										elseif ($error == 'skip') {
+											// Log
+											$log[] = 'NOT FOUND - OPERATION SKIPPED!';
 											continue;
-										} else {
-											break;
+										}
+										// Break current operations
+										else {
+											// Log
+											$log[] = 'NOT FOUND - OPERATIONS ABORTED!';
+										 	break;
 										}
 									}
 								}
@@ -516,7 +527,15 @@ class ControllerModulePvnmStorageCleaner extends Controller {
 	}
 
 	protected function validate() {
-		if (!$this->user->hasPermission('modify', 'module/pvnm_storage_cleaner')) {
+		if (!$this->user->hasPermission('modify', 'extension/module/pvnm_storage_cleaner')) {
+			$this->error['warning'] = $this->language->get('error_permission');
+		}
+
+		return !$this->error;
+	}
+
+	protected function validateWidget() {
+		if (!$this->user->hasPermission('access', 'extension/module/pvnm_storage_cleaner') || !$this->user->hasPermission('modify', 'extension/module/pvnm_storage_cleaner') || !$this->config->get('pvnm_storage_cleaner_status')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 

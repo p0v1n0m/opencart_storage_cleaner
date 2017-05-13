@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<code>pvnm_storage_cleaner</code>
+	<name>Storage Cleaner</name>
+	<version>2.0.0</version>
+	<author>p0v1n0m@gmail.com</author>
+	<link>https://github.com/p0v1n0m/opencart_storage_cleaner</link>
+	<file path="admin/controller/common/header.php">
+		<operation>
+			<search><![CDATA[
+$data['logged'] = true;
+			]]></search>
+			<add position="after"><![CDATA[
+			if ($this->config->get('pvnm_storage_cleaner_status') && $this->user->hasPermission('access', 'extension/module/pvnm_storage_cleaner') && $this->user->hasPermission('modify', 'extension/module/pvnm_storage_cleaner')) {
+				$this->load->language('extension/module/pvnm_storage_cleaner');
+
+				$data['text_clear'] = $this->language->get('text_clear');
+				$data['text_clear_all'] = $this->language->get('text_clear_all');
+				$data['text_refresh'] = $this->language->get('text_refresh');
+				$data['text_cache'] = $this->language->get('text_cache');
+				$data['text_cache_system'] = $this->language->get('text_cache_system');
+				$data['text_cache_modification'] = $this->language->get('text_cache_modification');
+				$data['text_cache_image'] = $this->language->get('text_cache_image');
+				$data['text_log'] = $this->language->get('text_log');
+				$data['text_log_error'] = $this->language->get('text_log_error');
+				$data['text_log_modification'] = $this->language->get('text_log_modification');
+
+				$this->load->model('extension/module/pvnm_storage_cleaner');
+
+				if ($this->config->get('pvnm_storage_cleaner_size')) {
+					$data['text_cleaner_size'] = $this->model_extension_module_pvnm_storage_cleaner->getSize();
+				} else {
+					$data['text_cleaner_size'] = false;
+				}
+
+				$data['storage_cleaner'] = true;
+			}
+			]]></add>
+		</operation>
+	</file>
+	<file path="admin/view/template/common/header.tpl">
+		<operation>
+			<search><![CDATA[
+<ul class="nav pull-right">
+			]]></search>
+			<add position="before"><![CDATA[
+<?php if (isset($storage_cleaner)) { ?>
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('.clear-dropdown li, .clear-dropdown a').on('click', function(e) {
+		e.stopPropagation();
+	});
+});
+
+function clearOption(type, key) {
+	var pvnm_size = $('.clear-dropdown').prev('a').children('span').html();
+	var pvnm_type = type + '-' + key;
+
+	$.ajax({
+		url: 'index.php?route=extension/module/pvnm_storage_cleaner/clear' + type + '&token=' + getURLVar('token'),
+		type: 'post',
+		data: 'key=' + key,
+		dataType: 'json',
+		beforeSend: function() {
+			$('.clear-dropdown').prev('a').children('span').html('<i class=\'fa fa-spinner\'></i>');
+			$('#button-' + pvnm_type + ' span').html('<i class=\'fa fa-spinner\'></i>');
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		},
+		success: function(json) {
+			$('.clear-dropdown > .alert-success, .clear-dropdown > .alert-danger').remove();
+
+			if (json['success']) {
+				$('#button-' + pvnm_type).closest('li').addClass('bg-success');
+				$('.clear-dropdown').append('<div class="alert alert-success" style="margin: 15px 20px 15px 20px; padding: 5px; font-size: 11px;"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+				if (json['size']) {
+					$('.clear-dropdown').prev('a').children('span').html(json['size']['all']);
+					$('#button-' + pvnm_type + ' span').html(json['size'][pvnm_type]);
+				}
+			}
+
+			if (json['error']) {
+				$('.clear-dropdown').prev('a').children('span').html(pvnm_size);
+				$('#button-' + pvnm_type).closest('li').addClass('bg-danger');
+				$('.clear-dropdown').append('<div class="alert alert-danger" style="margin: 15px 20px 15px 20px; padding: 5px; font-size: 11px;"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			}
+		}
+	});
+}
+
+function clearAll() {
+	clearOption('cache', 'system');
+	clearOption('cache', 'modification');
+	clearOption('cache', 'image');
+	clearOption('log', 'error');
+	clearOption('log', 'modification');
+}
+//--></script>
+<?php } ?>
+			]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[
+<ul class="nav pull-right">
+			]]></search>
+			<add position="after"><![CDATA[
+	<?php if (isset($storage_cleaner)) { ?>
+	<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><?php if ($text_cleaner_size) { ?><span class="label label-warning pull-left"><?php echo $text_cleaner_size['all']; ?></span><?php } ?><i class="fa fa-eraser fa-lg"></i></a>
+	  <ul class="dropdown-menu dropdown-menu-right clear-dropdown" style="width: 230px;">
+		<li class="dropdown-header"><?php echo $text_cache; ?></li>
+		<li><a><?php echo $text_cache_system; ?><button onclick="clearOption('cache', 'system');" type="button" data-loading-text="<i class='fa fa-spinner'></i>" data-toggle="tooltip" title="<?php echo $text_clear; ?>" class="btn btn-warning btn-xs pull-right" id="button-cache-system"><?php if ($text_cleaner_size) { ?><span><?php echo $text_cleaner_size['cache-system']; ?></span><?php } ?> <i class="fa fa-eraser"></i></button></a></li>
+		<li><a><?php echo $text_cache_modification; ?><button onclick="clearOption('cache', 'modification');" type="button" data-loading-text="<i class='fa fa-spinner'></i>" data-toggle="tooltip" title="<?php echo $text_refresh; ?>" class="btn btn-warning btn-xs pull-right" id="button-cache-modification"><?php if ($text_cleaner_size) { ?><span><?php echo $text_cleaner_size['cache-modification']; ?></span><?php } ?> <i class="fa fa-eraser"></i></button></a></li>
+		<li><a><?php echo $text_cache_image; ?><button onclick="clearOption('cache', 'image');" type="button" data-loading-text="<i class='fa fa-spinner'></i>" data-toggle="tooltip" title="<?php echo $text_clear; ?>" class="btn btn-warning btn-xs pull-right" id="button-cache-image"><?php if ($text_cleaner_size) { ?><span><?php echo $text_cleaner_size['cache-image']; ?></span><?php } ?> <i class="fa fa-eraser"></i></button></a></li>
+		<li class="divider"></li>
+		<li class="dropdown-header"><?php echo $text_log; ?></li>
+		<li><a><?php echo $text_log_error; ?><button onclick="clearOption('log', 'error');" type="button" data-loading-text="<i class='fa fa-spinner'></i>" data-toggle="tooltip" title="<?php echo $text_clear; ?>" class="btn btn-warning btn-xs pull-right" id="button-log-error"><?php if ($text_cleaner_size) { ?><span><?php echo $text_cleaner_size['log-error']; ?></span><?php } ?> <i class="fa fa-eraser"></i></button></a></li>
+		<li><a><?php echo $text_log_modification; ?><button onclick="clearOption('log', 'modification');" type="button" data-loading-text="<i class='fa fa-spinner'></i>" data-toggle="tooltip" title="<?php echo $text_clear; ?>" class="btn btn-warning btn-xs pull-right" id="button-log-modification"><?php if ($text_cleaner_size) { ?><span><?php echo $text_cleaner_size['log-modification']; ?></span><?php } ?> <i class="fa fa-eraser"></i></button></a></li>
+		<li class="divider"></li>
+		<li><a><button onclick="clearAll();" type="button" data-loading-text="<i class='fa fa-spinner'></i>" class="btn btn-warning btn-sm btn-block" id="button-clear-all"><?php echo $text_clear_all; ?><span class="pull-right"><i class="fa fa-eraser"></i></span></button></a></li>
+	  </ul>
+	</li>
+	<?php } ?>
+			]]></add>
+		</operation>
+	</file>
+</modification>
